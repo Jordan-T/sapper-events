@@ -39,20 +39,27 @@ export function getEvent(id) {
     });
 }
 
-export function addEvent(data) {
+export function addEvent(event) {
   const fetch = typeof window !== "undefined" ? window.fetch : this.fetch;
   return fetch(`${EVENT_API_URL}.json`, {
     method: "POST",
-    body: JSON.stringify(data),
+    body: JSON.stringify(event),
     headers: {
       "Content-Type": "application/json"
     }
-  }).then(res => {
-    if (!res.ok) {
-      throw new Error("An error occured, please try again!");
-    }
-    return res.json();
-  });
+  })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("An error occured, please try again!");
+      }
+      return res.json();
+    })
+    .then(data => {
+      return {
+        ...event,
+        id: data.name
+      };
+    });
 }
 
 export function updateEvent(id, data) {

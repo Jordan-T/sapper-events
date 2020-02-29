@@ -48,10 +48,14 @@
   }
 </style>
 
+<svelte:head>
+  <title>Event: {event.name}</title>
+</svelte:head>
+
 <div class="event">
   <a rel="prefetch" class="back" href="/events">Back to events</a>
 
-  <img src={event.image} alt={event.name} width="500" height="380" />
+  <img src={event.imageUrl} alt={event.name} width="500" height="380" />
   <div class="content">
     <h1>{event.name}</h1>
     <p>{event.description}</p>
