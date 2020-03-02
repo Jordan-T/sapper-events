@@ -1,4 +1,10 @@
 import { EVENT_API_URL } from "../global";
+import { deploy } from "./netlify";
+
+const triggerDeploy = (data) => {
+  deploy();
+  return data;
+};
 
 export function getEvents() {
   const fetch = typeof window !== "undefined" ? window.fetch : this.fetch;
@@ -54,6 +60,7 @@ export function addEvent(event) {
       }
       return res.json();
     })
+    .then(triggerDeploy)
     .then(data => {
       return {
         ...event,
@@ -70,22 +77,26 @@ export function updateEvent(id, data) {
     headers: {
       "Content-Type": "application/json"
     }
-  }).then(res => {
+  })
+  .then(res => {
     if (!res.ok) {
       throw new Error("An error occured, please try again!");
     }
     return res.json();
-  });
+  })
+  .then(triggerDeploy);
 }
 
 export function deleteEvent(id) {
   const fetch = typeof window !== "undefined" ? window.fetch : this.fetch;
   return fetch(`${EVENT_API_URL}/${id}.json`, {
     method: "DELETE"
-  }).then(res => {
+  })
+  .then(res => {
     if (!res.ok) {
       throw new Error("An error occured, please try again!");
     }
     return res.json();
-  });
+  })
+  .then(triggerDeploy);
 }
