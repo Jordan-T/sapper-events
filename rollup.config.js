@@ -11,7 +11,8 @@ import sapperEnv from "sapper-environment";
 
 const preprocess = sveltePreprocess({
   scss: {
-    includePaths: ["src", "node_modules"]
+		includePaths: ["src", "node_modules"],
+		data: '@import "styles/import";'
   },
   postcss: {
     plugins: [require("autoprefixer")]

@@ -12,12 +12,14 @@
   }
 
   button {
-    background: #aaaaaa;
+    background: var(--color-primary--100);
     font: inherit;
     font-size: 1rem;
     cursor: pointer;
-    border: 1px solid #aaaaaa;
+    border: 1px solid var(--color-primary--100);
     padding: 0.5rem 1rem;
+    transition: 0.1s ease-out;
+    transition-property: background-color, border-color, color;
   }
 
   button:focus {
@@ -25,11 +27,11 @@
   }
 
   button:first-of-type {
-    border-radius: 5px 0 0 5px;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
 
   button:last-of-type {
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
 
   button:hover,
@@ -37,7 +39,7 @@
   .active {
     background: var(--color-primary);
     border-color: var(--color-primary);
-    color: white;
+    color: var(--color-primary-alt);
   }
 </style>
 

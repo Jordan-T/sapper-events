@@ -13,7 +13,7 @@
 <style lang="scss">
   .event {
     border: solid 1px var(--color-primary--100);
-    border-radius: 0.3rem;
+    border-radius: var(--border-radius);
     overflow: hidden;
     padding: 1rem;
 

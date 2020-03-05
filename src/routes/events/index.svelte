@@ -1,122 +1,122 @@
 <script context="module">
-  import { getEvents } from "../../services/events";
-  export async function preload({ params, query }) {
-    return getEvents
-      .call(this)
-      .then(events => {
-        return { fetchedEvents: events.reverse() };
-      })
-      .catch(err => {
-        this.error(500, err.message);
-      });
-  }
+	import { getEvents } from "../../services/events";
+	export async function preload({ params, query }) {
+		return getEvents
+			.call(this)
+			.then(events => {
+				return { fetchedEvents: events.reverse() };
+			})
+			.catch(err => {
+				this.error(500, err.message);
+			});
+	}
 </script>
 
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import events from "../../events-store.js";
-  import Button from "../../components/UI/Button.svelte";
-  import EventFilter from "../../components/Event/EventFilter.svelte";
-  import EditEvent from "../../components/Event/EditEvent.svelte";
-  import EventItem from "../../components/Event/EventItem.svelte";
+	import { onMount, onDestroy } from "svelte";
+	import events from "../../stores/events-store.js";
+	import Button from "../../components/UI/Button.svelte";
+	import EventFilter from "../../components/Event/EventFilter.svelte";
+	import EditEvent from "../../components/Event/EditEvent.svelte";
+	import EventItem from "../../components/Event/EventItem.svelte";
 
-  export let fetchedEvents;
+	export let fetchedEvents;
 
-  let loadedEvents = fetchedEvents;
-  let editMode;
-  let editedId;
-  let isLoading;
-  let unsubscribe;
+	let loadedEvents = fetchedEvents;
+	let editMode;
+	let editedId;
+	let isLoading;
+	let unsubscribe;
 
-  let favsOnly = false;
+	let favsOnly = false;
 
-  $: filteredEvents = favsOnly
-    ? loadedEvents.filter(m => m.isFavorite)
-    : loadedEvents;
+	$: filteredEvents = favsOnly
+		? loadedEvents.filter(m => m.isFavorite)
+		: loadedEvents;
 
-  onMount(() => {
-    unsubscribe = events.subscribe(items => {
-      loadedEvents = items;
-    });
-    events.setEvents(fetchedEvents);
-  });
+	onMount(() => {
+		unsubscribe = events.subscribe(items => {
+			loadedEvents = items;
+		});
+		events.setEvents(fetchedEvents);
+	});
 
-  onDestroy(() => {
-    if (unsubscribe) {
-      unsubscribe();
-    }
-  });
+	onDestroy(() => {
+		if (unsubscribe) {
+			unsubscribe();
+		}
+	});
 
-  function setFilter(event) {
-    favsOnly = event.detail === 1;
-  }
+	function setFilter(event) {
+		favsOnly = event.detail === 1;
+	}
 
-  function savedEvent(event) {
-    editMode = null;
-    editedId = null;
-  }
+	function savedEvent(event) {
+		editMode = null;
+		editedId = null;
+	}
 
-  function cancelEdit() {
-    editMode = null;
-    editedId = null;
-  }
+	function cancelEdit() {
+		editMode = null;
+		editedId = null;
+	}
 
-  function startEdit(event) {
-    editMode = "edit";
-    editedId = event.detail;
-  }
+	function startEdit(event) {
+		editMode = "edit";
+		editedId = event.detail;
+	}
 
-  function startAdd() {
-    editMode = "edit";
-  }
+	function startAdd() {
+		editMode = "edit";
+	}
 </script>
 
 <style lang="scss">
-  .event-controls {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-  }
-  .events {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .no-events {
-    grid-column: 1 / -1;
-    padding: 1rem 1.5rem;
-    background: #eee;
-    border-radius: 0.3rem;
-    text-align: center;
-  }
+	.event-controls {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		margin-bottom: 1.5rem;
+	}
+	.events {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		grid-gap: 1.5rem;
+		margin-bottom: 1.5rem;
+	}
+	.no-events {
+		grid-column: 1 / -1;
+		padding: 1rem 1.5rem;
+		background: #eee;
+		border-radius: 0.3rem;
+		text-align: center;
+	}
 </style>
 
 <svelte:head>
-  <title>Events</title>
+	<title>Events</title>
 </svelte:head>
 
 <h1>This is my events</h1>
 
 {#if editMode === 'edit'}
-  <EditEvent id={editedId} on:save={savedEvent} on:cancel={cancelEdit} />
+	<EditEvent id={editedId} on:save={savedEvent} on:cancel={cancelEdit} />
 {/if}
 {#if isLoading}
-  <h1>LOADING...</h1>
+	<h1>LOADING...</h1>
 {:else}
-  <section class="event-controls">
-    <EventFilter on:select={setFilter} />
-    <Button on:click={startAdd}>New Event</Button>
-  </section>
-  <div class="events">
-    {#if filteredEvents.length === 0}
-      <div class="no-events">No events found, you can start adding some.</div>
-    {/if}
-    {#each filteredEvents as event (event.id)}
-      <EventItem {event} on:edit={startEdit} />
-    {/each}
-  </div>
+	<section class="event-controls">
+		<EventFilter on:select={setFilter} />
+		<Button on:click={startAdd}>New Event</Button>
+	</section>
+	<div class="events">
+		{#if filteredEvents.length === 0}
+			<div class="no-events">No events found, you can start adding some.</div>
+		{/if}
+		{#each filteredEvents as event (event.id)}
+			<EventItem {event} on:edit={startEdit} />
+		{/each}
+	</div>
 {/if}
 
 <a rel="prefetch" href={`events/bad`}>☠️ bad event ☠️</a>
