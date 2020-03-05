@@ -6,17 +6,17 @@
   let selectedButton = 0;
 </script>
 
-<style>
+<style lang="scss">
   div {
     font-size: 0px;
   }
 
   button {
-    background: var(--color-primary--100);
+    background: $color-primary--100;
     font: inherit;
     font-size: 1rem;
     cursor: pointer;
-    border: 1px solid var(--color-primary--100);
+    border: 1px solid $color-primary--100;
     padding: 0.5rem 1rem;
     transition: 0.1s ease-out;
     transition-property: background-color, border-color, color;
@@ -27,19 +27,19 @@
   }
 
   button:first-of-type {
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    border-radius: $border-radius 0 0 $border-radius;
   }
 
   button:last-of-type {
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    border-radius: 0 $border-radius $border-radius 0;
   }
 
   button:hover,
   button:active,
   .active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: var(--color-primary-alt);
+    background: $color-primary;
+    border-color: $color-primary;
+    color: $color-primary-alt;
   }
 </style>
 

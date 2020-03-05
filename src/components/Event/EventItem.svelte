@@ -12,8 +12,8 @@
 
 <style lang="scss">
   .event {
-    border: solid 1px var(--color-primary--100);
-    border-radius: var(--border-radius);
+    border: solid 1px $color-primary--100;
+    border-radius: $border-radius;
     overflow: hidden;
     padding: 1rem;
 

@@ -11,7 +11,7 @@
 	let touched = false;
 </script>
 
-<style>
+<style lang="scss">
 	input,
 	textarea {
 		display: block;
@@ -19,7 +19,7 @@
 		font: inherit;
 		border: none;
 		border-bottom: 2px solid #ccc;
-		border-radius: var(--border-radius) var(--border-radius) 0 0;
+		border-radius: $border-radius $border-radius 0 0;
 		background: white;
 		padding: 0.15rem 0.25rem;
 		transition: border-color 0.1s ease-out;
@@ -27,7 +27,7 @@
 
 	input:focus,
 	textarea:focus {
-		border-color: var(--color-primary);
+		border-color: $color-primary;
 		outline: none;
 	}
 

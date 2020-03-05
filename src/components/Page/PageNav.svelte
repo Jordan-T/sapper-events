@@ -8,11 +8,11 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	nav {
 		display: flex;
 		width: 100%;
-		border-bottom: 1px solid var(--color-primary--100);
+		border-bottom: 1px solid $color-primary--100;
 		font-weight: 300;
 		padding: 0 1em;
 		justify-content: space-between;
@@ -37,7 +37,7 @@
 		content: "";
 		width: calc(100% - 1em);
 		height: 2px;
-		background-color: var(--color-primary);
+		background-color: $color-primary;
 		display: block;
 		bottom: -1px;
 	}

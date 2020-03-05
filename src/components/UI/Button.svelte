@@ -6,15 +6,15 @@
 	export let disabled = false;
 </script>
 
-<style>
+<style lang="scss">
 	button,
 	a {
 		font: inherit;
-		border: 1px solid var(--color-primary);
-		background: var(--color-primary);
+		border: 1px solid $color-primary;
+		background: $color-primary;
 		padding: 0.5rem 1rem;
-		color: var(--color-primary-alt);
-		border-radius: var(--border-radius);
+		color: $color-primary-alt;
+		border-radius: $border-radius;
 		cursor: pointer;
 		text-decoration: none;
 		transition: background-color 0.1s ease-out;
@@ -28,8 +28,8 @@
 	button:active,
 	a:hover,
 	a:active {
-		background: var(--color-primary--hover);
-		border-color: var(--color-primary--hover);
+		background: $color-primary--hover;
+		border-color: $color-primary--hover;
 	}
 
 	button:disabled,
@@ -54,12 +54,12 @@
 
 	.outline {
 		background: transparent;
-		color: var(--color-primary);
+		color: $color-primary;
 	}
 
 	.outline:hover,
 	.outline:active {
-		background: var(--color-primary--100);
+		background: $color-primary--100;
 	}
 
 	.outline:disabled,
