@@ -28,16 +28,6 @@ const customEventsStore = {
 		events.update(items => {
 			return items.filter(i => i.id !== id);
 		});
-	},
-	toggleFavorite: id => {
-		events.update(items => {
-			const updatedEvent = { ...items.find(m => m.id === id) };
-			updatedEvent.isFavorite = !updatedEvent.isFavorite;
-			const eventIndex = items.findIndex(m => m.id === id);
-			const updatedEvents = [...items];
-			updatedEvents[eventIndex] = updatedEvent;
-			return updatedEvents;
-		});
 	}
 };
 

@@ -15,9 +15,9 @@
 <script>
 	import { onMount, onDestroy } from "svelte";
 	import events from "../../stores/events-store.js";
+	import userStore from "../../stores/user-store.js";
 	import Button from "../../components/UI/Button.svelte";
 	import EventFilter from "../../components/Event/EventFilter.svelte";
-	import EditEvent from "../../components/Event/EditEvent.svelte";
 	import EventItem from "../../components/Event/EventItem.svelte";
 
 	export let fetchedEvents;
@@ -27,12 +27,23 @@
 	let editedId;
 	let isLoading;
 	let unsubscribe;
+	let EditEvent;
 
 	let favsOnly = false;
 
+	$: if ($userStore.logged === false) {
+		favsOnly = false;
+	}
+
 	$: filteredEvents = favsOnly
-		? loadedEvents.filter(m => m.isFavorite)
+		? loadedEvents.filter(e => e.favOf && e.favOf[$userStore.id])
 		: loadedEvents;
+
+	$: if ($userStore.role === "admin") {
+		import("../../components/Event/EditEvent.svelte").then(cpt => {
+			EditEvent = cpt.default;
+		});
+	}
 
 	onMount(() => {
 		unsubscribe = events.subscribe(items => {
@@ -100,15 +111,23 @@
 <h1>This is my events</h1>
 
 {#if editMode === 'edit'}
-	<EditEvent id={editedId} on:save={savedEvent} on:cancel={cancelEdit} />
+	<svelte:component
+		this={EditEvent}
+		id={editedId}
+		on:save={savedEvent}
+		on:cancel={cancelEdit} />
 {/if}
 {#if isLoading}
 	<h1>LOADING...</h1>
 {:else}
-	<section class="event-controls">
-		<EventFilter on:select={setFilter} />
-		<Button on:click={startAdd}>New Event</Button>
-	</section>
+	{#if $userStore.logged}
+		<section class="event-controls">
+			<EventFilter on:select={setFilter} />
+			{#if $userStore.role === 'admin'}
+				<Button on:click={startAdd}>New Event</Button>
+			{/if}
+		</section>
+	{/if}
 	<div class="events">
 		{#if filteredEvents.length === 0}
 			<div class="no-events">No events found, you can start adding some.</div>

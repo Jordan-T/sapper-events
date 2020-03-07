@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 
 const user = writable({
+	role: 'anonymous',
 	loading: true,
 	logged: false,
 });

@@ -1,10 +1,31 @@
 <script>
-	import userStore from '../../stores/user-store';
+	import { onMount } from "svelte";
+	import userStore from "../../stores/user-store";
 
 	export let segment;
 
+	let LoginModal;
+	let showLoginModal = false;
+
+	function loadModal() {
+		if (LoginModal === undefined) {
+			LoginModal = null;
+			import("../User/LoginModal.svelte").then(
+				cpt => (LoginModal = cpt.default)
+			);
+		}
+	}
+
 	function onLogout() {
 		userStore.unsetUser();
+	}
+
+	function onLogin() {
+		showLoginModal = true;
+	}
+
+	function onCloseLogin() {
+		showLoginModal = false;
 	}
 </script>
 
@@ -92,25 +113,30 @@
 	</ul>
 	<ul class="end">
 		{#if $userStore.loading}
-		<li>
-			<span>loading...</span>
-		</li>
+			<li>
+				<span>loading...</span>
+			</li>
+		{:else if $userStore.logged}
+			<li>
+				<span>User: {$userStore.name || ''}</span>
+			</li>
+			<li class="middle">
+				<button on:click|preventDefault={onLogout}>logout</button>
+			</li>
 		{:else}
-			{#if $userStore.logged}
-				<li>
-					<span>User: {$userStore.name || ''}</span>
-				</li>
-				<li class="middle">
-					<button on:click|preventDefault={onLogout}>logout</button>
-				</li>
-			{:else}
-				<li>
-					<a
-						href="/login"
-						aria-current={segment === 'login' ? 'login' : undefined}
-					>login</a>
-				</li>
-			{/if}
+			<li>
+				<a
+					href="/login"
+					aria-current={segment === 'login' ? 'login' : undefined}
+					on:mouseenter={loadModal}
+					on:click|preventDefault={onLogin}>
+					login
+				</a>
+			</li>
 		{/if}
 	</ul>
 </nav>
+
+{#if showLoginModal}
+	<svelte:component this={LoginModal} on:cancel={onCloseLogin} />
+{/if}

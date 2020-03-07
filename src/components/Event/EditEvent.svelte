@@ -58,10 +58,7 @@
 				events.updateEvent(id, eventData);
 			});
 		} else {
-			addEvent({
-				...eventData,
-				isFav: false
-			}).then(event => {
+			addEvent(eventData).then(event => {
 				console.log("ADD THE EVENT:", event);
 
 				events.addEvent(event);
